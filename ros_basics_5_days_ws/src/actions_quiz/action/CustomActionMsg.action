@@ -1,0 +1,9 @@
+#goal
+string goal  # goal: TAKEOFF or LAND
+---
+#result
+std_msgs/Empty result # no result returned
+---
+#feedback  
+string feedback  # feedback: publishes once a second what action is taking place - taking off or landing
+

@@ -1,0 +1,8 @@
+<launch>
+    <node
+    pkg = 'actions_quiz'
+    type = 'action_server.py'
+    name = 'startstop'
+    output = 'screen'
+    />
+</launch>
