@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>logger_example_pkg</name>
+  <name>my_examples_pkg</name>
   <version>0.0.0</version>
-  <description>The logger_example_pkg package</description>
+  <description>The my_examples_pkg package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
   <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->
-  <maintainer email="user@todo.todo">user</maintainer>
+  <maintainer email="aitor@todo.todo">aitor</maintainer>
 
 
   <!-- One license tag required, multiple allowed, one license per tag -->
@@ -19,7 +19,7 @@
   <!-- Url tags are optional, but multiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
   <!-- Example: -->
-  <!-- <url type="website">http://wiki.ros.org/logger_example_pkg</url> -->
+  <!-- <url type="website">http://wiki.ros.org/my_examples_pkg</url> -->
 
 
   <!-- Author tags are optional, multiple are allowed, one per tag -->
@@ -63,4 +63,3 @@
 
   </export>
 </package>
-
