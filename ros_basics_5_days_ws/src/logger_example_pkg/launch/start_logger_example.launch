@@ -1,0 +1,8 @@
+<launch>
+    <node
+    pkg = 'logger_example_pkg'
+    type = 'exercise_6_1.py'
+    name = 'log_demo'
+    output = 'screen'
+    />
+</launch>
