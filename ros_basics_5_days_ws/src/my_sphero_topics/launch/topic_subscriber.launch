@@ -1,0 +1,14 @@
+<launch>
+    <node
+    pkg = 'my_sphero_topics'
+    name = 'cmd_vel_publisher'
+    type = 'topic_publisher.py'
+    output = 'screen'
+    />
+    <node
+    pkg = 'my_sphero_topics'
+    name = 'imu_subscriber'
+    type = 'topic_subscriber_crash_imu.py'
+    output = 'screen'
+    />
+</launch>
