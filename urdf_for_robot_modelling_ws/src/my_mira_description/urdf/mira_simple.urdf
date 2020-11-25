@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<robot name="mira">
+
+    <material name="green">
+        <color rgba="0 0.8 0 1"/>
+    </material>
+
+    <link name="base_link">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <cylinder radius="0.06" length="0.09"/>
+            </geometry>
+        </visual>
+    </link>
+  
+    <link name="roll_M1_link">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0.045"/>
+            <geometry>
+                <cylinder radius="0.06" length="0.09"/>
+            </geometry>
+            <material name="green"/>
+        </visual>
+    </link>
+    
+    <joint name="roll_joint" type="revolute">
+        <parent link="base_link"/>
+        <child link="roll_M1_link"/>
+        <origin xyz="0 0 0.045" rpy="0 0 0"/>
+        <limit lower="-0.2" upper="0.2" effort="0.1" velocity="0.005"/>
+        <axis xyz="0 1 1"/>
+    </joint>
+  
+</robot>
