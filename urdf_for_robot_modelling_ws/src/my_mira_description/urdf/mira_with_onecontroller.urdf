@@ -1,0 +1,286 @@
+<?xml version="1.0"?>
+<robot name="mira">
+
+    <material name="black">
+        <color rgba="0 0 0 1"/>
+    </material>  
+    <material name="grey">
+        <color rgba="0.6 0.6 0.6 0.2"/>
+    </material>   
+    <material name="white">
+        <color rgba="1 1 1 1"/>
+    </material>
+    <material name="red">
+        <color rgba="0.8 0 0 1"/>
+    </material>
+    <material name="green">
+        <color rgba="0 0.8 0 1"/>
+    </material>
+    <material name="blue">
+        <color rgba="0 0 0.8 1"/>
+    </material>
+
+    <!-- * * * Link Definitions * * * -->
+    <link name="base_link">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="0.18" />
+            <inertia ixx="0.0002835" ixy="0.0" ixz="0.0" iyy="0.0002835" iyz="0.0" izz="0.000324"/>
+        </inertial>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <cylinder radius="0.06" length="0.09"/> <!-- Using daes for collision is not advised, as the physics calculations are more intensive as the mesh gets more complex. That's why the collisions are normally basic geometric shapes, while the visuals are meshes. -->
+            </geometry>
+        </collision>
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://my_mira_description/models/mira/meshes/mira_body_v3.dae"/>
+            </geometry>
+            <material name="grey"/> <!-- This colour setting is only for RViz -->
+        </visual>
+    </link>  
+    <gazebo reference="base_link">
+        <kp>100000.0</kp> <!-- Static contact stiffness -->
+        <kd>100000.0</kd> <!-- Dynamic contact stiffness -->
+        <mu1>10.0</mu1> <!-- Static friction coefficient -->
+        <mu2>10.0</mu2> <!-- Dynamic friction coefficient -->
+        <material>Gazebo/Grey</material> <!-- This is the colour for the Gazebo simulation. Not applicable for dae files since the colours are embedded in the 3Dfile -->
+    </gazebo>
+
+    <link name="roll_M1_link">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="0.001" />
+            <inertia ixx="2.7083e-08" ixy="0.0" ixz="0.0" iyy="2.7083e-08" iyz="0.0" izz="5e-08"/>
+        </inertial>
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <cylinder radius="0.01" length="0.005"/>
+            </geometry>
+            <material name="red"/>
+        </visual>
+    </link>
+    <gazebo reference="roll_M1_link">
+        <kp>1000.0</kp> <!-- Static contact stiffness -->
+        <kd>10.0</kd> <!-- Dynamic contact stiffness -->
+        <mu1>10.0</mu1> <!-- Static friction coefficient -->
+        <mu2>10.0</mu2> <!-- Dynamic friction coefficient -->
+        <material>Gazebo/Red</material> 
+    </gazebo>
+    
+    <gazebo> <!-- This activates the gazebo control plugin for the Mira namespace. This namespace will be set in the main spawn launch file -->
+        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+            <robotNamespace>/mira</robotNamespace>
+        </plugin>
+    </gazebo>
+    <joint name="roll_joint" type="revolute">
+        <parent link="base_link"/>
+        <child link="roll_M1_link"/>
+        <origin xyz="0.0023 0 -0.0005" rpy="0 0 0"/>
+        <limit lower="-0.2" upper="0.2" effort="0.1" velocity="0.005"/>
+        <axis xyz="1 0 0"/>
+    </joint> 
+    <transmission name="tran1">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="roll_joint">
+            <hardwareInterface>EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="motor1">
+            <hardwareInterface>EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+
+    
+    <link name="pitch_M2_link">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="0.001" />
+            <inertia ixx="2.7083e-08" ixy="0.0" ixz="0.0" iyy="2.7083e-08" iyz="0.0" izz="5e-08"/>
+        </inertial>
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <cylinder radius="0.01" length="0.005"/>
+            </geometry>
+            <material name="green"/>
+        </visual>
+    </link>
+    <gazebo reference="pitch_M2_link">
+        <kp>1000.0</kp> <!-- Static contact stiffness -->
+        <kd>10.0</kd> <!-- Dynamic contact stiffness -->
+        <mu1>10.0</mu1> <!-- Static friction coefficient -->
+        <mu2>10.0</mu2> <!-- Dynamic friction coefficient -->
+        <material>Gazebo/Green</material> 
+    </gazebo>
+
+    <joint name="pitch_joint" type="revolute">
+        <parent link="roll_M1_link"/>
+        <child link="pitch_M2_link"/>
+        <origin xyz="0 0 0" rpy="0 -1.5708 0"/>
+        <limit lower="0" upper="0.44" effort="0.1" velocity="0.005"/>
+        <axis xyz="0 1 0"/>
+    </joint> 
+
+
+    <link name="yaw_M3_link">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="0.001" />
+            <inertia ixx="2.7083e-08" ixy="0.0" ixz="0.0" iyy="2.7083e-08" iyz="0.0" izz="5e-08"/>
+        </inertial>
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <cylinder radius="0.01" length="0.005"/>
+            </geometry>
+            <material name="blue"/>
+        </visual>
+    </link>
+    <gazebo reference="yaw_M3_link">
+        <kp>1000.0</kp> <!-- Static contact stiffness -->
+        <kd>10.0</kd> <!-- Dynamic contact stiffness -->
+        <mu1>10.0</mu1> <!-- Static friction coefficient -->
+        <mu2>10.0</mu2> <!-- Dynamic friction coefficient -->
+        <material>Gazebo/Blue</material> 
+    </gazebo>
+
+    <joint name="yaw_joint" type="continuous">
+        <parent link="pitch_M2_link"/>
+        <child link="yaw_M3_link"/>
+        <origin xyz="0.01 0 0" rpy="0 1.5708 0"/> <!--Even though we want the yaw_M3_link to be at xyz="0 0 0.1" from the origin, we are defining its location from the coordinates of the pitch_M2_link, and this has been rotated -pi rads, so we want to go along the x axis so xyz="0.01 0 0"-->
+        <limit effort="0.1" velocity="0.01"/>
+        <axis xyz="0 0 1"/>
+    </joint>  
+
+
+    <link name="head_link">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="0.02" />
+            <inertia ixx="2.88e-05" ixy="0.0" ixz="0.0" iyy="2.88e-05" iyz="0.0" izz="2.88e-05"/>
+        </inertial>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <sphere radius="0.06"/> 
+            </geometry>
+        </collision>
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://my_mira_description/models/mira/meshes/mira_head_v5.dae"/>
+            </geometry>
+            <material name="white"/>
+        </visual>
+    </link>
+    <gazebo reference="head_link">
+        <kp>1000.0</kp> <!-- Static contact stiffness -->
+        <kd>10.0</kd> <!-- Dynamic contact stiffness -->
+        <mu1>10.0</mu1> <!-- Static friction coefficient -->
+        <mu2>10.0</mu2> <!-- Dynamic friction coefficient -->
+        <material>Gazebo/White</material> 
+    </gazebo>
+
+    <joint name="base_head_joint" type="fixed">
+        <parent link="yaw_M3_link"/>
+        <child link="head_link"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+
+    <link name="left_eye_link">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="0.001" />
+            <inertia ixx="9.1875e-09" ixy="0.0" ixz="0.0" iyy="9.1875e-09" iyz="0.0" izz="1.378125e-08"/>
+        </inertial>
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://my_mira_description/models/mira/meshes/mira_eye_v4.dae"/>
+            </geometry>
+            <material name="black"/>
+        </visual>
+    </link>
+    <gazebo reference="left_eye_link">
+        <kp>1000.0</kp> <!-- Static contact stiffness -->
+        <kd>10.0</kd> <!-- Dynamic contact stiffness -->
+        <mu1>10.0</mu1> <!-- Static friction coefficient -->
+        <mu2>10.0</mu2> <!-- Dynamic friction coefficient -->
+        <material>Gazebo/Black</material> 
+    </gazebo>
+
+    <joint name="head_lefteye_joint" type="fixed">
+        <parent link="head_link"/>
+        <child link="left_eye_link"/>
+        <origin xyz="0.0095 0.057 0.0085" rpy="-1.5708 0 0"/>
+    </joint>
+
+
+    <link name="right_eye_link">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="0.001" />
+            <inertia ixx="9.1875e-09" ixy="0.0" ixz="0.0" iyy="9.1875e-09" iyz="0.0" izz="1.378125e-08"/>
+        </inertial>
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://my_mira_description/models/mira/meshes/mira_eye_v4.dae"/>
+            </geometry>
+            <material name="black"/>
+        </visual>
+    </link>
+    <gazebo reference="right_eye_link">
+        <kp>1000.0</kp> <!-- Static contact stiffness -->
+        <kd>10.0</kd> <!-- Dynamic contact stiffness -->
+        <mu1>10.0</mu1> <!-- Static friction coefficient -->
+        <mu2>10.0</mu2> <!-- Dynamic friction coefficient -->
+        <material>Gazebo/Black</material> 
+    </gazebo>
+
+    <joint name="head_righteye_joint" type="fixed">
+        <parent link="head_link"/>
+        <child link="right_eye_link"/>
+        <origin xyz="-0.0095 0.057 0.0085" rpy="-1.5708 0 0"/>
+    </joint>
+
+
+    <link name="camera_link">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="0.001" />
+            <inertia ixx="4.1667e-11" ixy="0.0" ixz="0.0" iyy="4.1667e-11" iyz="0.0" izz="4.1667e-11"/>
+        </inertial>
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <box size="0.0005 0.0005 0.0005"/>
+            </geometry>
+            <material name="green"/>
+        </visual>
+    </link>
+    <gazebo reference="camera_link">
+        <kp>1000.0</kp> <!-- Static contact stiffness -->
+        <kd>10.0</kd> <!-- Dynamic contact stiffness -->
+        <mu1>10.0</mu1> <!-- Static friction coefficient -->
+        <mu2>10.0</mu2> <!-- Dynamic friction coefficient -->
+        <material>Gazebo/Green</material> 
+    </gazebo>
+
+    <joint name="head_camera_joint" type="fixed">
+        <parent link="head_link"/>
+        <child link="camera_link"/>
+        <origin xyz="0 0.057 0.0255" rpy="0 0 0"/>
+    </joint>
+
+</robot>
+
+
+
+
+

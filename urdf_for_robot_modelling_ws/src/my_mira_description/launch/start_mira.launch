@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This launch file spawns the Mira robot and starts the controllers -->
+<launch>
+    <include file="$(find my_mira_description)/launch/spawn_mira.launch"/>
+    <include file="$(find my_mira_description)/launch/mira_joints_control.launch"/>
+</launch>

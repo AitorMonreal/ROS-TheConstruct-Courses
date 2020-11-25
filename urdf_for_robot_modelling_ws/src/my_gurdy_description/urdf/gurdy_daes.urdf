@@ -1,0 +1,171 @@
+<?xml version="1.0"?>
+<robot name="gurdy">
+
+	<!-- * * * Link & Joint Definitions * * * -->
+    <link name="base_link">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <box size="0.01 0.01 0.01"/>
+            </geometry>
+        </visual>
+    </link>
+    <link name="head_link">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://my_gurdy_description/models/gurdy/meshes/gurdy_head_v2.dae"/>
+            </geometry>
+        </visual>
+    </link>
+    <joint name="head_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="head_link"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <!-- Upper Legs -->
+    <!-- NOTE: when placing a link in space, first goes the positioning from the joint, and then the positioning of the link. So the position of the link is with respect to the origin of the joint! -->
+    <!-- Hence, to position the joint at the end of the cylinder, first decide on the position of the joint with respect to the parent link's joint origin (eg: head_joint), and then decide on the position of the link with respect to the joint, so that the joint goes where it should -->
+    <!-- You can prove that joints are with respect to the parent link's joint (ie to the joint for which the current parent is the child) by moving the head_joint say 0.5 in the x-axis, and head_link -0.5 in the x-axis. The head_link will be at the same position as before, but the rest of the joints will move 0.5 in the x-axis, since they depend on the position of head_joint -->
+    <link name="upperleg_M1_link">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/> <!-- Here I suspect that, as oppose to gurdy_simple.urdf where we used cylinders whose coordinate systems are positioned at their centres, this dae files have their coordinate system at one end of the lnk already. Therefore, we don't have to 'move' the links in the z-axis to position the joint in the correct location -->
+            <geometry>
+                <mesh filename="package://my_gurdy_description/models/gurdy/meshes/gurdy_higherleg_v2.dae"/>
+            </geometry>
+        </visual>
+    </link>
+    <joint name="head_upperlegM1_joint" type="revolute">
+        <parent link="head_link"/>
+        <child link="upperleg_M1_link"/>
+        <origin xyz="-0.02165 -0.0125 -0.008" rpy="3.14159 0 0.523599"/> <!-- rpy - First roll around x, then pitch around y, and finally yaw around z -->
+        <limit lower="-1.5" upper="1.5" effort="1" velocity="0.005"/>
+        <axis xyz="0 1 0"/> <!-- The axis of rotation are with reference to the axis of the joint, not the global reference frame. Hence, these are the global reference axes after the rpy transformation - You can visualize them in RViz -->
+    </joint>
+
+    <link name="upperleg_M2_link">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://my_gurdy_description/models/gurdy/meshes/gurdy_higherleg_v2.dae"/>
+            </geometry>
+        </visual>
+    </link>
+    <joint name="head_upperlegM2_joint" type="revolute">
+        <parent link="head_link"/>
+        <child link="upperleg_M2_link"/>
+        <origin xyz="0.02165 -0.0125 -0.008" rpy="3.14159 0 2.61799"/>
+        <limit lower="-1.5" upper="1.5" effort="1" velocity="0.005"/>
+        <axis xyz="0 1 0"/>
+    </joint>
+
+    <link name="upperleg_M3_link">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://my_gurdy_description/models/gurdy/meshes/gurdy_higherleg_v2.dae"/>
+            </geometry>
+        </visual>
+    </link>
+    <joint name="head_upperlegM3_joint" type="revolute">
+        <parent link="head_link"/>
+        <child link="upperleg_M3_link"/>
+        <origin xyz="0 0.025 -0.008" rpy="3.14159 0 -1.5708"/>
+        <limit lower="-1.5" upper="1.5" effort="1" velocity="0.005"/>
+        <axis xyz="0 1 0"/>
+    </joint>
+
+    <!-- Lower Legs -->
+    <link name="lowerleg_M1_link">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://my_gurdy_description/models/gurdy/meshes/gurdy_lowerleg_v2.dae"/>
+            </geometry>
+        </visual>
+    </link>
+    <joint name="upperlegM1_lowerlegM1_joint" type="revolute">
+        <parent link="upperleg_M1_link"/>
+        <child link="lowerleg_M1_link"/>
+        <origin xyz="0 0.0095 0.06" rpy="0 0 3.14159"/>
+        <limit lower="-1.6" upper="1.6" effort="1" velocity="0.005"/>
+        <axis xyz="0 1 0"/>
+    </joint>
+
+    <link name="lowerleg_M2_link">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://my_gurdy_description/models/gurdy/meshes/gurdy_lowerleg_v2.dae"/>
+            </geometry>
+        </visual>
+    </link>
+    <joint name="upperlegM2_lowerlegM2_joint" type="revolute">
+        <parent link="upperleg_M2_link"/>
+        <child link="lowerleg_M2_link"/>
+        <origin xyz="0 0.0095 0.06" rpy="0 0 3.14159"/>
+        <limit lower="-1.6" upper="1.6" effort="1" velocity="0.005"/>
+        <axis xyz="0 1 0"/>
+    </joint>
+
+    <link name="lowerleg_M3_link">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://my_gurdy_description/models/gurdy/meshes/gurdy_lowerleg_v2.dae"/>
+            </geometry>
+        </visual>
+    </link>
+    <joint name="upperlegM3_lowerlegM3_joint" type="revolute">
+        <parent link="upperleg_M3_link"/>
+        <child link="lowerleg_M3_link"/>
+        <origin xyz="0 0.0095 0.06" rpy="0 0 3.14159"/>
+        <limit lower="-1.6" upper="1.6" effort="1" velocity="0.005"/>
+        <axis xyz="0 1 0"/>
+    </joint>
+
+    <!-- Feet -->
+    <link name="footM1_link">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <sphere radius="0.008"/>
+            </geometry>
+        </visual>
+    </link>
+    <joint name="lowerlegM1_footM1_joint" type="fixed">
+        <parent link="lowerleg_M1_link"/>
+        <child link="footM1_link"/>
+        <origin xyz="0 0 0.06" rpy="0 0 0"/>
+    </joint>
+
+    <link name="footM2_link">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <sphere radius="0.008"/>
+            </geometry>
+        </visual>
+    </link>
+    <joint name="lowerlegM2_footM2_joint" type="fixed">
+        <parent link="lowerleg_M2_link"/>
+        <child link="footM2_link"/>
+        <origin xyz="0 0 0.06" rpy="0 0 0"/>
+    </joint>
+
+    <link name="footM3_link">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <sphere radius="0.008"/>
+            </geometry>
+        </visual>
+    </link>
+    <joint name="lowerlegM3_footM3_joint" type="fixed">
+        <parent link="lowerleg_M3_link"/>
+        <child link="footM3_link"/>
+        <origin xyz="0 0 0.06" rpy="0 0 0"/>
+    </joint>
+
+</robot>
