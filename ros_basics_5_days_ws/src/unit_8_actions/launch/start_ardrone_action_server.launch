@@ -1,0 +1,8 @@
+<launch>
+    <node
+    pkg = 'unit_8_actions'
+    type = 'ardrone_action_server.py'
+    name = 'square'
+    output = 'screen'
+    />
+</launch>

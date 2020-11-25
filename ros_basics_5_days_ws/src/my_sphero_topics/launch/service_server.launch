@@ -1,0 +1,20 @@
+<launch>
+    <node
+    pkg = 'my_sphero_topics'
+    name = 'cmd_vel_publisher'
+    type = 'topic_publisher.py'
+    output = 'screen'
+    />
+    <node
+    pkg = 'my_sphero_topics'
+    name = 'crash_service_server'
+    type = 'service_server_crash.py'
+    output = 'screen'
+    />
+    <node
+    pkg = 'my_sphero_topics'
+    name = 'crash_service_client'
+    type = 'service_client_crash.py'
+    output = 'screen'
+    />
+</launch>

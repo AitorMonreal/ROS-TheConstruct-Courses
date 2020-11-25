@@ -1,0 +1,22 @@
+<launch>
+    <param name="goal_distance" type="double" value="10.0" />
+    <param name="seconds_recording" type="int" value="120" />
+    <node
+    pkg = 'my_turtlebot_actions'
+    name = 'maze_action_server'
+    type = 'action_server_maze.py'
+    output = 'screen'
+    />
+    <node
+    pkg = 'my_turtlebot_topics'
+    name = 'obstacle_service_server'
+    type = 'service_server_obstacle.py'
+    output = 'screen'
+    />
+    <node 
+    pkg ="my_turtlebot_main"
+    type="turtlebot_main.py"
+    name="turtlebot_main_node"
+    output="screen"
+    />
+</launch>

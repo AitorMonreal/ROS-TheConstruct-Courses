@@ -1,0 +1,9 @@
+<launch>
+    <include file="$(find services_quiz)/launch/start_bb8_move_custom_service_server.launch"/>
+    <node
+    pkg = 'services_quiz'
+    type = 'bb8_move_custom_service_client.py'
+    name = 'service_client'
+    output = 'screen'
+    />
+</launch>
