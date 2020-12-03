@@ -19,12 +19,12 @@
 
     <link name="head_link">
         <inertial>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <origin rpy="0 0 0" xyz="0 0 0.02"/>
             <mass value="0.01" />
-            <inertia ixx="0.0002835" ixy="0.0" ixz="0.0" iyy="0.0002835" iyz="0.0" izz="0.000324"/>
+            <inertia ixx="7.5833e-06" ixy="0.0" ixz="0.0" iyy="7.5833e-06" iyz="0.0" izz="1.25e-05"/>
         </inertial>
         <collision>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <origin rpy="0 0 0" xyz="0 0 0.02"/>
             <geometry>
                 <cylinder radius="0.05" length="0.04"/>
             </geometry>
@@ -36,12 +36,9 @@
             </geometry>
         </visual>
     </link>
-    <gazebo reference="base_link">
-        <kp>100000.0</kp> <!-- Static contact stiffness -->
-        <kd>100000.0</kd> <!-- Dynamic contact stiffness -->
+    <gazebo reference="head_link">
         <mu1>10.0</mu1> <!-- Static friction coefficient -->
         <mu2>10.0</mu2> <!-- Dynamic friction coefficient -->
-        <material>Gazebo/Grey</material> <!-- This is the colour for the Gazebo simulation. Not applicable for dae files since the colours are embedded in the 3Dfile -->
     </gazebo>
 
     <joint name="head_joint" type="fixed">
@@ -57,12 +54,12 @@
     <!-- You can prove that joints are with respect to the parent link's joint (ie to the joint for which the current parent is the child) by moving the head_joint say 0.5 in the x-axis, and head_link -0.5 in the x-axis. The head_link will be at the same position as before, but the rest of the joints will move 0.5 in the x-axis, since they depend on the position of head_joint -->
     <link name="upperleg_M1_link">
         <inertial>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <origin rpy="0 0 0" xyz="0 0 0.03"/>
             <mass value="0.01" />
             <inertia ixx="3.015625e-06" ixy="0.0" ixz="0.0" iyy="3.015625e-06" iyz="0.0" izz="3.125e-08"/>
         </inertial>
         <collision>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <origin rpy="0 0 0" xyz="0 0 0.03"/>
             <geometry>
                 <cylinder radius="0.0025" length="0.06"/>
             </geometry>
@@ -74,19 +71,12 @@
             </geometry>
         </visual>
     </link>
-    <gazebo reference="upperleg_M1_link">
-        <kp>100000.0</kp> <!-- Static contact stiffness -->
-        <kd>100000.0</kd> <!-- Dynamic contact stiffness -->
-        <mu1>10.0</mu1> <!-- Static friction coefficient -->
-        <mu2>10.0</mu2> <!-- Dynamic friction coefficient -->
-        <material>Gazebo/Red</material> <!-- This is the colour for the Gazebo simulation. Not applicable for dae files since the colours are embedded in the 3Dfile -->
-    </gazebo>
 
     <joint name="head_upperlegM1_joint" type="revolute">
         <parent link="head_link"/>
         <child link="upperleg_M1_link"/>
         <origin xyz="-0.02165 -0.0125 -0.008" rpy="3.14159 0 0.523599"/> <!-- rpy - First roll around x, then pitch around y, and finally yaw around z -->
-        <limit lower="-1.5" upper="1.5" effort="1" velocity="0.005"/>
+        <limit lower="-1.55" upper="0" effort="1" velocity="0.005"/>
         <axis xyz="0 1 0"/> <!-- The axis of rotation are with reference to the axis of the joint, not the global reference frame. Hence, these are the global reference axes after the rpy transformation - You can visualize them in RViz -->
     </joint>
     <transmission name="tran1">
@@ -102,12 +92,12 @@
 
     <link name="upperleg_M2_link">
         <inertial>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <origin rpy="0 0 0" xyz="0 0 0.03"/>
             <mass value="0.01" />
             <inertia ixx="3.015625e-06" ixy="0.0" ixz="0.0" iyy="3.015625e-06" iyz="0.0" izz="3.125e-08"/>
         </inertial>
         <collision>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <origin rpy="0 0 0" xyz="0 0 0.03"/>
             <geometry>
                 <cylinder radius="0.0025" length="0.06"/>
             </geometry>
@@ -119,19 +109,12 @@
             </geometry>
         </visual>
     </link>
-    <gazebo reference="upperleg_M2_link">
-        <kp>100000.0</kp> <!-- Static contact stiffness -->
-        <kd>100000.0</kd> <!-- Dynamic contact stiffness -->
-        <mu1>10.0</mu1> <!-- Static friction coefficient -->
-        <mu2>10.0</mu2> <!-- Dynamic friction coefficient -->
-        <material>Gazebo/Red</material> <!-- This is the colour for the Gazebo simulation. Not applicable for dae files since the colours are embedded in the 3Dfile -->
-    </gazebo>
 
     <joint name="head_upperlegM2_joint" type="revolute">
         <parent link="head_link"/>
         <child link="upperleg_M2_link"/>
         <origin xyz="0.02165 -0.0125 -0.008" rpy="3.14159 0 2.61799"/>
-        <limit lower="-1.5" upper="1.5" effort="1" velocity="0.005"/>
+        <limit lower="-1.55" upper="0" effort="1" velocity="0.005"/>
         <axis xyz="0 1 0"/>
     </joint>
     <transmission name="tran2">
@@ -148,12 +131,12 @@
 
     <link name="upperleg_M3_link">
         <inertial>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <origin rpy="0 0 0" xyz="0 0 0.03"/>
             <mass value="0.01" />
             <inertia ixx="3.015625e-06" ixy="0.0" ixz="0.0" iyy="3.015625e-06" iyz="0.0" izz="3.125e-08"/>
         </inertial>
         <collision>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <origin rpy="0 0 0" xyz="0 0 0.03"/>
             <geometry>
                 <cylinder radius="0.0025" length="0.06"/>
             </geometry>
@@ -165,19 +148,12 @@
             </geometry>
         </visual>
     </link>
-    <gazebo reference="upperleg_M3_link">
-        <kp>100000.0</kp> <!-- Static contact stiffness -->
-        <kd>100000.0</kd> <!-- Dynamic contact stiffness -->
-        <mu1>10.0</mu1> <!-- Static friction coefficient -->
-        <mu2>10.0</mu2> <!-- Dynamic friction coefficient -->
-        <material>Gazebo/Red</material> <!-- This is the colour for the Gazebo simulation. Not applicable for dae files since the colours are embedded in the 3Dfile -->
-    </gazebo>
 
     <joint name="head_upperlegM3_joint" type="revolute">
         <parent link="head_link"/>
         <child link="upperleg_M3_link"/>
         <origin xyz="0 0.025 -0.008" rpy="3.14159 0 -1.5708"/>
-        <limit lower="-1.5" upper="1.5" effort="1" velocity="0.005"/>
+        <limit lower="-1.55" upper="0" effort="1" velocity="0.005"/>
         <axis xyz="0 1 0"/>
     </joint>
     <transmission name="tran3">
@@ -195,12 +171,12 @@
     <!-- Lower Legs -->
     <link name="lowerleg_M1_link">
         <inertial>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <origin rpy="0 0 0" xyz="0 0 0.03"/>
             <mass value="0.01" />
             <inertia ixx="3.005625e-06" ixy="0.0" ixz="0.0" iyy="3.005625e-06" iyz="0.0" izz="1.125e-08"/>
         </inertial>
         <collision>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <origin rpy="0 0 0" xyz="0 0 0.03"/>
             <geometry>
                 <cylinder radius="0.0015" length="0.06"/>
             </geometry>
@@ -212,19 +188,12 @@
             </geometry>
         </visual>
     </link>
-    <gazebo reference="lowerleg_M1_link">
-        <kp>100000.0</kp> <!-- Static contact stiffness -->
-        <kd>100000.0</kd> <!-- Dynamic contact stiffness -->
-        <mu1>10.0</mu1> <!-- Static friction coefficient -->
-        <mu2>10.0</mu2> <!-- Dynamic friction coefficient -->
-        <material>Gazebo/Red</material> <!-- This is the colour for the Gazebo simulation. Not applicable for dae files since the colours are embedded in the 3Dfile -->
-    </gazebo>
 
     <joint name="upperlegM1_lowerlegM1_joint" type="revolute">
         <parent link="upperleg_M1_link"/>
         <child link="lowerleg_M1_link"/>
         <origin xyz="0 0.0095 0.06" rpy="0 0 3.14159"/>
-        <limit lower="-1.6" upper="1.6" effort="1" velocity="0.005"/>
+        <limit lower="-2.9" upper="1.57" effort="1" velocity="0.005"/>
         <axis xyz="0 1 0"/>
     </joint>
     <transmission name="tran4">
@@ -241,12 +210,12 @@
 
     <link name="lowerleg_M2_link">
         <inertial>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <origin rpy="0 0 0" xyz="0 0 0.03"/>
             <mass value="0.01" />
             <inertia ixx="3.005625e-06" ixy="0.0" ixz="0.0" iyy="3.005625e-06" iyz="0.0" izz="1.125e-08"/>
         </inertial>
         <collision>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <origin rpy="0 0 0" xyz="0 0 0.03"/>
             <geometry>
                 <cylinder radius="0.0015" length="0.06"/>
             </geometry>
@@ -258,19 +227,12 @@
             </geometry>
         </visual>
     </link>
-    <gazebo reference="lowerleg_M2_link">
-        <kp>100000.0</kp> <!-- Static contact stiffness -->
-        <kd>100000.0</kd> <!-- Dynamic contact stiffness -->
-        <mu1>10.0</mu1> <!-- Static friction coefficient -->
-        <mu2>10.0</mu2> <!-- Dynamic friction coefficient -->
-        <material>Gazebo/Red</material> <!-- This is the colour for the Gazebo simulation. Not applicable for dae files since the colours are embedded in the 3Dfile -->
-    </gazebo>
 
     <joint name="upperlegM2_lowerlegM2_joint" type="revolute">
         <parent link="upperleg_M2_link"/>
         <child link="lowerleg_M2_link"/>
         <origin xyz="0 0.0095 0.06" rpy="0 0 3.14159"/>
-        <limit lower="-1.6" upper="1.6" effort="1" velocity="0.005"/>
+        <limit lower="-2.9" upper="1.57" effort="1" velocity="0.005"/>
         <axis xyz="0 1 0"/>
     </joint>
     <transmission name="tran5">
@@ -287,12 +249,12 @@
 
     <link name="lowerleg_M3_link">
         <inertial>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <origin rpy="0 0 0" xyz="0 0 0.03"/>
             <mass value="0.01" />
             <inertia ixx="3.005625e-06" ixy="0.0" ixz="0.0" iyy="3.005625e-06" iyz="0.0" izz="1.125e-08"/>
         </inertial>
         <collision>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <origin rpy="0 0 0" xyz="0 0 0.03"/>
             <geometry>
                 <cylinder radius="0.0015" length="0.06"/>
             </geometry>
@@ -304,19 +266,12 @@
             </geometry>
         </visual>
     </link>
-    <gazebo reference="lowerleg_M3_link">
-        <kp>100000.0</kp> <!-- Static contact stiffness -->
-        <kd>100000.0</kd> <!-- Dynamic contact stiffness -->
-        <mu1>10.0</mu1> <!-- Static friction coefficient -->
-        <mu2>10.0</mu2> <!-- Dynamic friction coefficient -->
-        <material>Gazebo/Red</material> <!-- This is the colour for the Gazebo simulation. Not applicable for dae files since the colours are embedded in the 3Dfile -->
-    </gazebo>
 
     <joint name="upperlegM3_lowerlegM3_joint" type="revolute">
         <parent link="upperleg_M3_link"/>
         <child link="lowerleg_M3_link"/>
         <origin xyz="0 0.0095 0.06" rpy="0 0 3.14159"/>
-        <limit lower="-1.6" upper="1.6" effort="1" velocity="0.005"/>
+        <limit lower="-2.9" upper="1.57" effort="1" velocity="0.005"/>
         <axis xyz="0 1 0"/>
     </joint>
     <transmission name="tran6">
@@ -390,7 +345,7 @@
         <kd>1000.0</kd> <!-- Dynamic contact stiffness -->
         <mu1>10.0</mu1> <!-- Static friction coefficient -->
         <mu2>10.0</mu2> <!-- Dynamic friction coefficient -->
-        <material>Gazebo/Red</material> <!-- This is the colour for the Gazebo simulation. Not applicable for dae files since the colours are embedded in the 3Dfile -->
+        <material>Gazebo/Green</material> <!-- This is the colour for the Gazebo simulation. Not applicable for dae files since the colours are embedded in the 3Dfile -->
     </gazebo>
 
     <joint name="lowerlegM2_footM2_joint" type="fixed">
@@ -424,7 +379,7 @@
         <kd>1000.0</kd> <!-- Dynamic contact stiffness -->
         <mu1>10.0</mu1> <!-- Static friction coefficient -->
         <mu2>10.0</mu2> <!-- Dynamic friction coefficient -->
-        <material>Gazebo/Red</material> <!-- This is the colour for the Gazebo simulation. Not applicable for dae files since the colours are embedded in the 3Dfile -->
+        <material>Gazebo/Blue</material> <!-- This is the colour for the Gazebo simulation. Not applicable for dae files since the colours are embedded in the 3Dfile -->
     </gazebo>
 
     <joint name="lowerlegM3_footM3_joint" type="fixed">
