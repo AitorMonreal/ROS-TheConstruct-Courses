@@ -1,0 +1,8 @@
+prefix=/home/aitor/ros/ROS-TheConstruct-Courses/urdf_for_robot_modelling_ws/install
+
+Name: my_gurdy_description
+Description: Description of my_gurdy_description
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

@@ -1,0 +1,6 @@
+devel_space: /home/aitor/ros/ROS-TheConstruct-Courses/urdf_for_robot_modelling_ws/devel
+install: false
+install_space: /home/aitor/ros/ROS-TheConstruct-Courses/urdf_for_robot_modelling_ws/install
+profile: default
+source_space: /home/aitor/ros/ROS-TheConstruct-Courses/urdf_for_robot_modelling_ws/src
+workspace: /home/aitor/ros/ROS-TheConstruct-Courses/urdf_for_robot_modelling_ws
