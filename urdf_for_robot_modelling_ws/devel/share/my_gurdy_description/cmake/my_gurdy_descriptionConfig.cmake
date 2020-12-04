@@ -1,0 +1,1 @@
+/home/aitor/ros/ROS-TheConstruct-Courses/urdf_for_robot_modelling_ws/devel/.private/my_gurdy_description/share/my_gurdy_description/cmake/my_gurdy_descriptionConfig.cmake

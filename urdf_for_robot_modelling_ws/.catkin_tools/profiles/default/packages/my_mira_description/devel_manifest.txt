@@ -1,0 +1,5 @@
+my_mira_description
+/home/aitor/ros/ROS-TheConstruct-Courses/urdf_for_robot_modelling_ws/devel/.private/my_mira_description/cmake.lock /home/aitor/ros/ROS-TheConstruct-Courses/urdf_for_robot_modelling_ws/devel/./cmake.lock
+/home/aitor/ros/ROS-TheConstruct-Courses/urdf_for_robot_modelling_ws/devel/.private/my_mira_description/share/my_mira_description/cmake/my_mira_descriptionConfig.cmake /home/aitor/ros/ROS-TheConstruct-Courses/urdf_for_robot_modelling_ws/devel/share/my_mira_description/cmake/my_mira_descriptionConfig.cmake
+/home/aitor/ros/ROS-TheConstruct-Courses/urdf_for_robot_modelling_ws/devel/.private/my_mira_description/share/my_mira_description/cmake/my_mira_descriptionConfig-version.cmake /home/aitor/ros/ROS-TheConstruct-Courses/urdf_for_robot_modelling_ws/devel/share/my_mira_description/cmake/my_mira_descriptionConfig-version.cmake
+/home/aitor/ros/ROS-TheConstruct-Courses/urdf_for_robot_modelling_ws/devel/.private/my_mira_description/lib/pkgconfig/my_mira_description.pc /home/aitor/ros/ROS-TheConstruct-Courses/urdf_for_robot_modelling_ws/devel/lib/pkgconfig/my_mira_description.pc
