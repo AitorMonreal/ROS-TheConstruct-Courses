@@ -1,10 +1,10 @@
-#!/usr/bin/env python
+#! /usr/bin/env python
 
 import rospy
 from std_msgs.msg import Float64
 
-class GurdyMotion(object):
-    def __init__(self):
+class GurdyWalk(object):
+    def __init__(self, topic='/cmd_vel'):
         self.long_r = rospy.Rate(1)
         self.short_r = rospy.Rate(1)
         self._pub_upper_M1 = rospy.Publisher('/gurdy/head_upperlegM1_joint_position_controller/command', Float64, queue_size = 1)
@@ -16,6 +16,15 @@ class GurdyMotion(object):
         self.upper_pub_value = Float64()
         self.lower_pub_value = Float64()
         self.ctrl_c = False
+        self.topic_name = topic
+        self._sub_vel = rospy.Subscriber(self.topic_name, Twist, self.teleop_cb)
+    
+    def teleop_cb(self, msg):
+        forwards_vel = msg.linear.x
+        self.move_forwards(forwards_vel)
+    
+    def move_forwards(self):
+        
 
     def move_robot(self):
         self.stand_still()
@@ -62,7 +71,7 @@ class GurdyMotion(object):
 
 if __name__ == '__main__':
     rospy.init_node('gurdy_motion')
-    gurdymotion = GurdyMotion()
+    gurdywalk = GurdyWalk()
     
     ctrl_c = False
     def shutdownhook():
@@ -74,4 +83,4 @@ if __name__ == '__main__':
     rospy.on_shutdown(shutdownhook)
 
     while not ctrl_c:
-        gurdymotion.move_robot()
+        gurdywalk.move_robot()

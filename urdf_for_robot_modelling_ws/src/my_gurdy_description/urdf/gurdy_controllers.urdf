@@ -90,6 +90,7 @@
         </actuator>
     </transmission>
 
+
     <link name="upperleg_M2_link">
         <inertial>
             <origin rpy="0 0 0" xyz="0 0 0.03"/>
