@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- This launch file spawns the Mira robot and starts the controllers -->
 <launch>
-    <include file="$(find my_gurdy_description)/launch/spawn_gurdy.launch"/>
-    <include file="$(find my_gurdy_description)/launch/gurdy_joints_control.launch"/>
+    <include file="$(find my_gurdy_description)/launch/spawn_gurdy_extra_joint.launch"/>
+    <include file="$(find my_gurdy_description)/launch/gurdy_extra_joint_control.launch"/>
 </launch>
