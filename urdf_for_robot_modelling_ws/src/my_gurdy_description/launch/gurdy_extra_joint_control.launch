@@ -7,6 +7,9 @@
     output="screen" ns="/gurdy" args="head_upperlegM1_joint_position_controller
                                     head_upperlegM2_joint_position_controller
                                     head_upperlegM3_joint_position_controller
+                                    Z_M1_joint_position_controller
+                                    Z_M2_joint_position_controller
+                                    Z_M3_joint_position_controller
                                     upperlegM1_lowerlegM1_joint_position_controller
                                     upperlegM2_lowerlegM2_joint_position_controller
                                     upperlegM3_lowerlegM3_joint_position_controller
