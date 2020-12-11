@@ -252,7 +252,7 @@
     <link name="lowerleg_M1_link">
         <inertial>
             <origin rpy="0 0 0" xyz="0 0 0.03"/>
-            <mass value="0.01" />
+            <mass value="0.01"/>
             <inertia ixx="3.005625e-06" ixy="0.0" ixz="0.0" iyy="3.005625e-06" iyz="0.0" izz="1.125e-08"/>
         </inertial>
         <collision>
