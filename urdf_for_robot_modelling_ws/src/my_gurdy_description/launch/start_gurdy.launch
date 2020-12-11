@@ -3,4 +3,6 @@
 <launch>
     <include file="$(find my_gurdy_description)/launch/spawn_gurdy_extra_joint.launch"/>
     <include file="$(find my_gurdy_description)/launch/gurdy_extra_joint_control.launch"/>
+    <!--<include file="$(find my_gurdy_description)/launch/spawn_gurdy.launch"/>
+    <include file="$(find my_gurdy_description)/launch/gurdy_joints_control.launch"/>-->
 </launch>
