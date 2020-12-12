@@ -46,19 +46,33 @@ class GurdyWalk(object):
             self.open_joints()
             self.short_r.sleep()
 
-    def joint_publish(self, leg_number, z_joint_val, upperleg_val, lowerleg_val):
+    def single_leg_publish(self, leg_number, z_joint_val, upperleg_val, lowerleg_val):
         if leg_number == 1:
-            self._pub_z_joint_M1.publish(z_joint_val)
-            self._pub_upper_M1.publish(upper_val)
-            self._pub_lower_M1.publish(lower_val)
+            self.M1_leg_publish(z_joint_val, upperleg_val, lowerleg_val)
         elif leg_number == 2:
-            self._pub_z_joint_M2.publish(z_joint_val)
-            self._pub_upper_M2.publish(upper_val)
-            self._pub_lower_M2.publish(lower_val)
+            self.M2_leg_publish(z_joint_val, upperleg_val, lowerleg_val)
         elif leg_number == 3:
-            self._pub_z_joint_M3.publish(z_joint_val)
-            self._pub_upper_M3.publish(upper_val)
-            self._pub_lower_M3.publish(lower_val)
+            self.M3_leg_publish(z_joint_val, upperleg_val, lowerleg_val)
+
+    def all_legs_publish(self, z_joint_val, upperleg_val, lowerleg_val):
+        self.M1_leg_publish(z_joint_val, upperleg_val, lowerleg_val)
+        self.M2_leg_publish(z_joint_val, upperleg_val, lowerleg_val)
+        self.M3_leg_publish(z_joint_val, upperleg_val, lowerleg_val)
+    
+    def M1_leg_publish(self, z_joint_val, upperleg_val, lowerleg_val):
+        self._pub_z_joint_M1.publish(z_joint_val)
+        self._pub_upper_M1.publish(upper_val)
+        self._pub_lower_M1.publish(lower_val)
+    
+    def M2_leg_publish(self, z_joint_val, upperleg_val, lowerleg_val):
+        self._pub_z_joint_M2.publish(z_joint_val)
+        self._pub_upper_M2.publish(upper_val)
+        self._pub_lower_M2.publish(lower_val)
+
+    def M3_leg_publish(self, z_joint_val, upperleg_val, lowerleg_val):
+        self._pub_z_joint_M3.publish(z_joint_val)
+        self._pub_upper_M3.publish(upper_val)
+        self._pub_lower_M3.publish(lower_val)
 
     def move_leg_forward(self, leg_number):
         self.z_joint_pub_value.data = 0.75
@@ -67,10 +81,10 @@ class GurdyWalk(object):
         self.joint_publish(leg_number, self.z_joint_pub_value, self.upper_pub_value, self.lower_pub_value)
 
     def stand_still(self):
-        self.z_joint_pub_value.data = -1.57
-        self.upper_pub_value.data = -1.55
-        self.lower_pub_value.data = -1.57
-        self.joint_publish(self.z_joint_pub_value, self.upper_pub_value, self.lower_pub_value)
+        self.z_joint_pub_value.data = 0
+        self.upper_pub_value.data = -0.5
+        self.lower_pub_value.data = -0.7
+        self.all_joint_publish(self.z_joint_pub_value, self.upper_pub_value, self.lower_pub_value)
     
     def open_joints(self):
         self.z_joint_pub_value.data = -1.57
