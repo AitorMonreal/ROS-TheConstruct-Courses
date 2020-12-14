@@ -1,0 +1,341 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="gurdy">
+
+    <gazebo> <!-- This activates the gazebo control plugin for the Gurdy namespace. This namespace will be set in the main spawn launch file -->
+        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+            <robotNamespace>/gurdy</robotNamespace>
+        </plugin>
+    </gazebo>
+
+
+    <!-- * * * MACROS * * * -->
+    <!-- Rotary Joints -->
+    <xacro:macro name="virtual_link" params="number">
+        <link name='virtual_M${number}_link'>
+            <inertial>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <mass value="0.001"/>
+                <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+            </inertial>
+        </link>
+    </xacro>
+
+    <xacro:macro name="z_rotary_transmission" params="number">
+        <transmission name="tran${number}">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="z_rotary_M${number}_joint">
+                <hardwareInterface>EffortJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="motor${number}">
+                <hardwareInterface>EffortJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+    </xacro>
+
+    <!-- Upperlegs -->
+    <xacro:macro name="upperleg_link" params="number">
+        <link name="upperleg_M${number}_link">
+            <inertial>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <mass value="0.01" />
+                <inertia ixx="3.015625e-06" ixy="0.0" ixz="0.0" iyy="3.015625e-06" iyz="0.0" izz="3.125e-08"/>
+            </inertial>
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <cylinder radius="0.0025" length="0.06"/>
+                </geometry>
+            </collision>
+            <visual>
+                <origin rpy="0 0 0" xyz="0 0 0"/> <!-- Here I suspect that, as oppose to gurdy_simple.urdf where we used cylinders whose coordinate systems are positioned at their centres, this dae files have their coordinate system at one end of the lnk already. Therefore, we don't have to 'move' the links in the z-axis to position the joint in the correct location -->
+                <geometry>
+                    <mesh filename="package://my_gurdy_description/models/gurdy/meshes/gurdy_higherleg_v2.dae"/>
+                </geometry>
+            </visual>
+        </link>
+    </xacro>
+
+    <xacro:macro name="upperleg_joint" params="number">
+        <joint name="head_upperlegM${number}_joint" type="revolute">
+            <parent link="virtual_M${number}_link"/>
+            <child link="upperleg_M${number}_link"/>
+            <origin xyz="0 0 0" rpy="0 0 0"/> <!-- rpy - First roll around x (pi rads, or 180 deg, so that z is looking down, to make distances from here down positive), then pitch around y, and finally yaw around z to have the joint's y-axis along the link -->
+            <limit lower="${upperleg_joint_lower_limit}" 
+                   upper="${upperleg_joint_upper_limit}" 
+                   effort="${upperleg_joint_effort_limit}" 
+                   velocity="${upperleg_joint_velocity_limit}" />
+            <!--<safety_controller k_position="0.001"
+                            k_velocity="0.005" 
+                            soft_lower_limit="-2.0" 
+                            soft_upper_limit="0.5" />-->
+            <axis xyz="0 1 0"/> <!-- The axis of rotation are with reference to the axis of the joint, not the global reference frame. Hence, these are the global reference axes after the rpy transformation - You can visualize them in RViz -->
+        </joint>
+    </xacro>
+
+    <xacro:macro name="upperleg_transmission" params="number">
+        <transmission name="tran${number}">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="head_upperlegM${number}_joint">
+                <hardwareInterface>EffortJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="motor${number}">
+                <hardwareInterface>EffortJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+    </xacro>
+    
+    <!-- Lowerlegs -->
+    <xacro:macro name="lowerleg_link" params="number">
+        <link name="lowerleg_M${number}_link">
+            <inertial>
+                <origin rpy="0 0 0" xyz="0 0 0.03"/>
+                <mass value="0.01" />
+                <inertia ixx="3.005625e-06" ixy="0.0" ixz="0.0" iyy="3.005625e-06" iyz="0.0" izz="1.125e-08"/>
+            </inertial>
+            <collision>
+                <origin rpy="0 0 0" xyz="0 0 0.03"/>
+                <geometry>
+                    <cylinder radius="0.0015" length="0.06"/>
+                </geometry>
+            </collision>
+            <visual>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://my_gurdy_description/models/gurdy/meshes/gurdy_lowerleg_v2.dae"/>
+                </geometry>
+            </visual>
+        </link>
+    </xacro>
+
+    <xacro:macro name="lowerleg_joint" params="number">
+        <joint name="upperlegM${number}_lowerlegM${number}_joint" type="revolute">
+            <parent link="upperleg_M${number}_link"/>
+            <child link="lowerleg_M${number}_link"/>
+            <origin xyz="0 0.0095 0.06" rpy="0 0 3.14159"/>
+            <limit lower="${lowerleg_joint_lower_limit}" 
+                   upper="${lowerleg_joint_upper_limit}" 
+                   effort="${lowerleg_joint_effort_limit}" 
+                   velocity="${lowerleg_joint_velocity_limit}" />
+            <!--<safety_controller k_position="0.001"
+                            k_velocity="0.005" 
+                            soft_lower_limit="-3.5" 
+                            soft_upper_limit="2.0"/>-->
+            <axis xyz="0 1 0"/>
+        </joint>
+    </xacro>
+
+    <xacro:macro name="lowerleg_transmission" params="number">
+        <transmission name="tran${number}">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="upperlegM${number}_lowerlegM${number}_joint">
+                <hardwareInterface>EffortJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="motor${number}">
+                <hardwareInterface>EffortJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+    </xacro>
+
+    <!-- Feet -->
+    <xacro:macro name="foot_link" params="number">
+        <link name="footM${number}_link">
+            <inertial>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <mass value="0.01" />
+                <inertia ixx="2.56e-07" ixy="0.0" ixz="0.0" iyy="2.56e-07" iyz="0.0" izz="2.56e-07"/>
+            </inertial>
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <sphere radius="0.008"/>
+                </geometry>
+            </collision>
+            <visual>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <sphere radius="0.008"/>
+                </geometry>
+            </visual>
+        </link>
+    </xacro>
+
+    <xacro:macro name="foot_gazebo" params="number color">
+        <gazebo reference="footM${number}_link">
+            <kp>1000.0</kp> <!-- Static contact stiffness -->
+            <kd>1000.0</kd> <!-- Dynamic contact stiffness -->
+            <mu1>10.0</mu1> <!-- Static friction coefficient -->
+            <mu2>10.0</mu2> <!-- Dynamic friction coefficient -->
+            <material>Gazebo/${color}</material> <!-- This is the colour for the Gazebo simulation. Not applicable for dae files since the colours are embedded in the 3Dfile -->
+        </gazebo>
+    </xacro>
+
+    <xacro:macro name="foot_joint" params="number">
+        <joint name="lowerlegM${number}_footM${number}_joint" type="fixed">
+            <parent link="lowerleg_M${number}_link"/>
+            <child link="footM${number}_link"/>
+            <origin xyz="0 0 0.06" rpy="0 0 0"/>
+        </joint>
+    </xacro>
+
+
+    <!-- * * * XACROS * * * -->
+    <xacro:property name="rotary_joint_lower_limit" value="-0.9" />
+    <xacro:property name="rotary_joint_upper_limit" value="0.9" />
+    <xacro:property name="rotary_joint_effort_limit" value="1" />
+    <xacro:property name="rotary_joint_velocity_limit" value="0.005" />
+
+    <xacro:property name="upperleg_joint_lower_limit" value="-2.9" />
+    <xacro:property name="upperleg_joint_upper_limit" value="1.57" />
+    <xacro:property name="upperleg_joint_effort_limit" value="1" />
+    <xacro:property name="upperleg_joint_velocity_limit" value="0.005" />
+
+    <xacro:property name="lowerleg_joint_lower_limit" value="-1.55" />
+    <xacro:property name="lowerleg_joint_upper_limit" value="0" />
+    <xacro:property name="lowerleg_joint_effort_limit" value="1" />
+    <xacro:property name="lowerleg_joint_velocity_limit" value="0.005" />
+
+
+	<!-- * * * LINK & JOINT DEFINITIONS * * * -->
+    <!-- Base & Head -->
+    <link name="base_link">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <box size="0.01 0.01 0.01"/>
+            </geometry>
+        </visual>
+    </link>
+
+    <link name="head_link">
+        <inertial>
+            <origin rpy="0 0 0" xyz="0 0 0.02"/>
+            <mass value="0.01" />
+            <inertia ixx="7.5833e-06" ixy="0.0" ixz="0.0" iyy="7.5833e-06" iyz="0.0" izz="1.25e-05"/>
+        </inertial>
+        <collision>
+            <origin rpy="0 0 0" xyz="0 0 0.02"/>
+            <geometry>
+                <cylinder radius="0.05" length="0.04"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://my_gurdy_description/models/gurdy/meshes/gurdy_head_v2.dae"/>
+            </geometry>
+        </visual>
+    </link>
+    <gazebo reference="head_link">
+        <mu1>10.0</mu1> <!-- Static friction coefficient -->
+        <mu2>10.0</mu2> <!-- Dynamic friction coefficient -->
+    </gazebo>
+
+    <joint name="head_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="head_link"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <!-- Rotary Joints -->
+    <!-- NOTE: when placing a link in space, first goes the positioning from the joint, and then the positioning of the link. So the position of the link is with respect to the origin of the joint! -->
+    <!-- Hence, to position the joint at the end of the cylinder, first decide on the position of the joint with respect to the parent link's joint origin (eg: head_joint), and then decide on the position of the link with respect to the joint, so that the joint goes where it should -->
+    <!-- You can prove that joints are with respect to the parent link's joint (ie to the joint for which the current parent is the child) by moving the head_joint say 0.5 in the x-axis, and head_link -0.5 in the x-axis. The head_link will be at the same position as before, but the rest of the joints will move 0.5 in the x-axis, since they depend on the position of head_joint -->
+    <xacro:virtual_link number="1"/>
+    <joint name="z_rotary_M1_joint" type="revolute">
+        <parent link="head_link"/>
+        <child link="virtual_M1_link"/>
+        <origin xyz="-0.02165 -0.0125 -0.008" rpy="3.14159 0 0.523599"/>
+        <limit lower="${rotary_joint_lower_limit}" 
+               upper="${rotary_joint_upper_limit}" 
+               effort="${rotary_joint_effort_limit}" 
+               velocity="${rotary_joint_velocity_limit}" />
+        <axis xyz="0 0 1"/>
+    </joint> 
+    <xacro:z_rotary_transmission number="1"/>
+
+    <xacro:virtual_link number="2"/>
+    <joint name="z_rotary_M2_joint" type="revolute">
+        <parent link="head_link"/>
+        <child link="virtual_M2_link"/>
+        <origin xyz="0.02165 -0.0125 -0.008" rpy="3.14159 0 2.61799"/>
+        <limit lower="${rotary_joint_lower_limit}" 
+               upper="${rotary_joint_upper_limit}" 
+               effort="${rotary_joint_effort_limit}" 
+               velocity="${rotary_joint_velocity_limit}" />
+        <axis xyz="0 0 1"/>
+    </joint>  
+    <xacro:z_rotary_transmission number="2"/>
+
+    <xacro:virtual_link number="3"/>
+    <joint name="z_rotary_M3_joint" type="revolute">
+        <parent link="head_link"/>
+        <child link="virtual_M3_link"/>
+        <origin xyz="0 0.025 -0.008" rpy="3.14159 0 -1.5708"/>
+        <limit lower="${rotary_joint_lower_limit}" 
+               upper="${rotary_joint_upper_limit}" 
+               effort="${rotary_joint_effort_limit}" 
+               velocity="${rotary_joint_velocity_limit}" />
+        <axis xyz="0 0 1"/>
+    </joint>    
+    <xacro:z_rotary_transmission number="3"/>
+
+    <!-- Upper Legs -->
+    <xacro:upperleg_link number="1"/>
+    <xacro:upperleg_joint number="1"/>
+    <xacro:upperleg_transmission number="1"/>
+
+    <xacro:upperleg_link number="2"/>
+    <xacro:upperleg_joint number="2"/>
+    <xacro:upperleg_transmission number="2"/>
+
+    <xacro:upperleg_link number="3"/>
+    <xacro:upperleg_joint number="3"/>
+    <xacro:upperleg_transmission number="3"/>
+
+    <!-- Lower Legs -->
+    <xacro:lowerleg_link number="1"/>
+    <xacro:lowerleg_joint number="1"/>
+    <xacro:lowerleg_transmission number="1"/>
+
+    <xacro:lowerleg_link number="2"/>
+    <xacro:lowerleg_joint number="2"/>
+    <xacro:lowerleg_transmission number="2"/>
+
+    <xacro:lowerleg_link number="3"/>
+    <xacro:lowerleg_joint number="3"/>
+    <xacro:lowerleg_transmission number="3"/>
+
+    <!-- Feet -->
+    <xacro:foot_link number="1"/>
+    <xacro:foot_gazebo number="1" color="Red"/>
+    <xacro:foot_transmission number="1"/>
+
+    <xacro:foot_link number="2"/>
+    <xacro:foot_gazebo number="2" color="Green"/>
+    <xacro:foot_transmission number="2"/>
+
+    <xacro:foot_link number="3"/>
+    <xacro:foot_gazebo number="3" color="Blue"/>
+    <xacro:foot_transmission number="3"/>
+
+
+    <!-- * * * SENSORS * * * -->
+    <!-- IMU -->
+    <gazebo>
+        <plugin name="gazebo_ros_imu_controller" filename="libgazebo_ros_imu.so">
+        <robotNamespace>/gurdy</robotNamespace>
+        <topicName>imu/data</topicName>
+        <serviceName>imu/service</serviceName>
+        <bodyName>base_link</bodyName>
+        <gaussianNoise>0</gaussianNoise>
+        <rpyOffsets>0 0 0</rpyOffsets>
+        <updateRate>10.0</updateRate>
+        <alwaysOn>true</alwaysOn>
+        <gaussianNoise>0</gaussianNoise>
+        </plugin>
+    </gazebo>
+
+</robot>
