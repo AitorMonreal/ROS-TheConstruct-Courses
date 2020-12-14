@@ -4,7 +4,7 @@
         <arg name="x" value="0.0" />
         <arg name="y" value="0.0" />
         <arg name="z" value="0.2" />
-        <arg name="xacro_robot_file" value="$(find xacro)/xacro '$(find my_gurdy_description)/robots/gurdy.urdf.xacro'"/>
+        <arg name="xacro_robot_file" value="$(find my_gurdy_description)/robots/gurdy.urdf.xacro"/>
         <arg name="robot_name" value="gurdy" />
     </include>
 </launch>
