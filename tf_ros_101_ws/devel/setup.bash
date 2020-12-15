@@ -1,0 +1,1 @@
+/home/aitor/ros/ROS-TheConstruct-Courses/tf_ros_101_ws/devel/.private/catkin_tools_prebuild/setup.bash
